@@ -97,15 +97,37 @@ public class Main {
 		return start_end_wordList;
 	}
 	
+	/**
+	 * Finds the word ladder of 2 words through DFS using recursion
+	 * @param start is the first word as a String
+	 * @param end is the last word as a String
+	 * @return ArrayList of the ladder or null if it doesn't exist
+	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
-		// Returned list should be ordered start to end.  Include start and end.
-		// Return empty list if no ladder.
-		// TODO some code
+		// initialize dictionary set
 		Set<String> dict = makeDictionary();
-		// TODO more code
-		
-		return null; // replace this line later with real return
+		// to make it comparable to dictionary words
+		start = start.toUpperCase();
+    	end = end.toUpperCase();
+		// no word ladder if first/last word are not in dictionary
+		if (!(dict.contains(start) && dict.contains(end)))
+			return null;
+    	// no word ladder if first word = last word
+    	if (start.equals(end))
+			return null;
+		 	
+    	ArrayList<String> result = computeLadder(start, end, dict); 
+	 	
+		// create reversed ladder for result
+		ArrayList<String> reverseLadder = new ArrayList<String>();
+		// if no path to create ladder, return null
+		if(result == null)
+			return null;
+		for (int i = result.size()-1; i >= 0; i -= 1) { 
+			String word = result.get(i).toLowerCase();
+			reverseLadder.add(word);	
+		}
+		return reverseLadder;
 	}
 	
 	/**
@@ -232,5 +254,60 @@ public class Main {
 		}
 	}
 	// TODO
-	// Other private static methods here
+		 /**
+     * computeLadder(start,end,dictionary) returns the word
+     * ladder from start to end using recursion
+     * @param   String start   The beginning of the word ladder
+     * @param   String end     The end of the word ladder
+     * @param   Set<String> dict  The list of all valid words
+     *
+     */
+	private static ArrayList<String> computeLadder(String start, String end, Set<String> dict) {
+		
+		ArrayList<String> neighbors = findNeighbors(start, dict);
+		
+		// if no neighbor at all, no ladder possible
+		if (neighbors.isEmpty()) { 
+				return null; 
+		}
+		else if (neighbors.contains(end)) {
+		// if only one edge apart, return start and end e.g.) prone-drone
+			ArrayList<String> path = new ArrayList<String>();
+			String  topLadder= end;	path.add(topLadder);			
+			String  bottomLadder= start;path.add(bottomLadder);
+			return path;
+		}
+		
+		ArrayList<String> shortPath = new ArrayList<String>();
+		int shortLen = dict.size();
+		String shorter = null;
+		shortPath = null;
+		// remove visited words
+		dict.removeAll(neighbors);
+		
+		// recursively traverse the graph
+		for (String w : neighbors) {
+			// access all unvisited neighboring nodes
+			ArrayList<String> path = computeLadder(w,end,dict);
+	        // compute and compare path's length	
+			if (!(path == null)) {	
+				if (path.size() < shortLen) {
+					shortPath = path;
+					shortLen = path.size();
+					shorter = w;
+				}
+			} 
+			else { continue; }
+		}
+		// if no path for ladder, 
+		if (shortPath == null) { 
+			return null;
+		}		else{ 
+					dict.add(shorter);
+					shortPath.add(start);
+					return shortPath;			
+		}
+
+	}
+
 }
