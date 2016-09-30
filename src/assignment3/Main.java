@@ -52,24 +52,24 @@ public class Main {
 		
 		// Reads user input and sets startWord and endWord
 		initialize();
+	
+		//ArrayList<String> testingBFS = getWordLadderBFS(startWord, endWord);
 		
-		//Ashvin is working on currently
-		ArrayList<String> testingBFS = getWordLadderBFS(startWord, endWord);
+		//printLadder(testingBFS);
 		
-		//TO DO
-		printLadder(testingBFS);
-		
-		//TO DO
 		//ArrayList<String> testingDFS = getWordLadderDFS(startWord, endWord);
 		
-		//TO DO
 		//printLadder(testingDFS);
 
 	}
 	
+	/**
+	 * Reads user input and sets startWord and endWord
+	 * initializes static variables or constants
+	 * initial set up of dictionary, startWord, and endWord
+	 */
 	public static void initialize() {
-		// initialize your static variables or constants here.
-		// We will call this method before running our JUNIT tests.  So call it 
+		// To be called before JUNIT tests. So call it 
 		// only once at the start of main.
 		dictionaryWords = makeDictionary();
 		start_end_wordList = parse(kb);
@@ -85,7 +85,7 @@ public class Main {
 	 * If command is /quit, return empty ArrayList. 
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
-		System.out.println("Enter two words here:");
+		//take user input for startWord and endWord
 		String input = keyboard.nextLine();
 		
 		//Check if "/quit" was entered
@@ -96,6 +96,7 @@ public class Main {
 		ArrayList<String> start_end_wordList = new ArrayList<String>(Arrays.asList(input.split(" ")));
 		return start_end_wordList;
 	}
+	
 	/**
 	 * Finds the word ladder of 2 words through DFS using recursion
 	 * @param start is the first word as a String
